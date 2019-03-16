@@ -2,23 +2,16 @@ from pyetherscan import Client
 from pyetherscan import Address
 
 client = Client()
-address = '0xb296D9e83c966bf65065E5D4e5F1Bf802A881950'
+address_1 = '0xb215cFebB90D91b1D2F499843800d3105b1366Fc'
+address_2 = '0xE84c0cb5a6D2AE7E84Dcdcc0AAAb2A36cBc95c07'
 contract_address = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
-
-counter = 0
-token_balance = 0
 
 from time import sleep
 
-import serial
-ser = serial.Serial("COM7", 9600) # Establish the connection on a specific port
+#import serial
+#ser = serial.Serial("COM7", 9600) # Establish the connection on a specific port
 
-while True:
-
-    # Increase counter by 1
-    counter += 1
-    print("Reading #", counter)
-
+def getETH(address):
     # Get address
     address_balance = client.get_single_balance(address)
 #    print ("Status Code: ", address_balance.response_status_code)
@@ -28,7 +21,9 @@ while True:
     balance = address_balance.balance
     balance = balance / 10**18
     print("ETH Reading:", balance)
+    return balance
 
+def printDAI(address, token_balance):
     # Get token balance
     ethereum_address = Address(address)
     new_token_balance = ethereum_address.token_balance(contract_address)
@@ -43,7 +38,10 @@ while True:
 #    print("Difference: ", token_difference)
     token_balance = new_token_balance
 #    print("Dai Balance set to: ", token_balance)
+    return
 
+def doSerialStuff ():
+    # Send serial message to Arduino
     if counter % 2 == 0:
         print("Counter is Even")
         ser.write(b'0')
@@ -51,31 +49,45 @@ while True:
         print("Counter is Odd")
         ser.write(b'1')
 
-    print("Arduino Reading:", ser.readline()) # Read the newest output from the Arduino
-    sleep(5)
+    # Read the newest output from the Arduino        
+    print("Arduino Reading:", ser.readline())
 
-#    if token_difference > 0:
-#        print("WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+def run():
+    counter = 0
+    balance_1 = 0
+    balance_2 = 0
 
+    while True:
+        # Increase counter by 1
+        counter += 1
+        print("Reading #", counter)
 
-#        sleep(5) # may need 5 seconds
-        #number = 5
-        #thisByteArray = number.to_bytes(64, byteorder = 'big')
-#        number = int(token_balance)
-#        numberInByteArray = number.to_bytes(64, byteorder = 'big')
-        #byte = chr(0x31)
-        #print("writing...")
-        #print(byte)
-        #realbyte = byte.encode
-        #print(realbyte)
-        #ser.write(byte.encode()) # byte0<=i<=255
-#        ser.write(numberInByteArray)
-#        sleep(2)
-#        print("reading line...")
-#        print(ser.readline()) # Read the newest output from the Arduino
-#        thisString = str(ser.readline())
+        # Print addresses and balances
+        print("Address 1:", address_1)
+        new_balance_1 = getETH(address_1)
+        difference_1 = new_balance_1 - balance_1
+        balance_1 = new_balance_1
+        print("Difference is:", difference_1)
+        print("Address 2:", address_2)
+        new_balance_2 = getETH(address_2)
+        difference_2 = new_balance_2 - balance_2
+        print("Difference is:", difference_2)
+        balance_2 = new_balance_2
 
-    # Print new line
-    print('\n')
+        if(difference_1 > 0):
+            print("ACCOUNT 1 IS WINNING!")
+        if(difference_2 > 0):
+            print("ACCOUNT 2 IS WINNING!")
+
+        #do the Serial stuff
+#        doSerialStuff():
+        
+        # Print new line
+        print('\n')
+
+        # Sleep
+        sleep(2)
+
+run()
 
 ser.close()
