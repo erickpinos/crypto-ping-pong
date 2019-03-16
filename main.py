@@ -27,7 +27,7 @@ def getETH(address):
 
     # Get ethereum balance
     balance = api.get_balance()
-    balance = balance / 10**18
+    balance = int(balance) / 10**18
     print("ETH Reading:", balance)
     return balance
 
