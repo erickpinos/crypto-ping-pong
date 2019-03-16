@@ -28,13 +28,14 @@ void loop() {
   char inByte = ' ';
   if(Serial.available()){ // only send data back if data has been sent
     char inByte = Serial.read(); // read the incoming data
-    Serial.println(inByte); // send the data back in a new line so that it is not all one long line
 
-
-    // Pick one
-    testOnboardLight(inByte);
-    //testLEDStripLight(inByte);
+    // Pick One
+    //testOnboardLight(inByte);
+    //testLEDStripBlink(inByte);
+    testLEDStripTraverse(inByte);
     //stream(1);
+
+    Serial.println(inByte); // send the data back in a new line so that it is not all one long line
   }
   delay(100); // delay for 1/10 of a second
 }
@@ -53,7 +54,7 @@ void testOnboardLight(char inByte) {
    }
 }
 
-void testLEDStripLight(char inByte) {
+void testLEDStripBlink(char inByte) {
   if(inByte == '0') {
     // Turn the LED off, then pause
     leds[0] = CRGB::Black;
@@ -66,6 +67,26 @@ void testLEDStripLight(char inByte) {
     leds[0] = CRGB::Red;
     FastLED.show();
     delay(500);
+  }
+}
+
+void testLEDStripTraverse(char inByte) {
+  if(inByte == '0') {
+    // Turn the LED off, then pause
+    for(int i=0; i<100; i++) {
+      leds[i] = CRGB::Blue;
+      FastLED.show();
+      delay(100);
+    }
+  }
+
+  if(inByte == '1') {
+    // Turn the LED on, then pause
+    for(int i=0; i<100; i++) {
+      leds[i] = CRGB::Red;
+      FastLED.show();
+      delay(100);
+    }
   }
 }
 

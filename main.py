@@ -52,7 +52,7 @@ while True:
         ser.write(b'1')
 
     print("Arduino Reading:", ser.readline()) # Read the newest output from the Arduino
-    sleep(2)
+    sleep(5)
 
 #    if token_difference > 0:
 #        print("WOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
