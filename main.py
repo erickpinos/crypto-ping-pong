@@ -1,6 +1,18 @@
 from pyetherscan import Client
 from pyetherscan import Address
 
+from etherscan.accounts import Account
+import json
+
+with open('../../api_key.json', mode='r') as key_file:
+    key = json.loads(key_file.read())['key']
+
+address = '0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a'
+
+api = Account(address=address, api_key=key)
+balance = api.get_balance()
+print(balance)
+
 client = Client()
 address_1 = '0xb215cFebB90D91b1D2F499843800d3105b1366Fc'
 address_2 = '0xE84c0cb5a6D2AE7E84Dcdcc0AAAb2A36cBc95c07'
