@@ -1,10 +1,7 @@
-from pyetherscan import Client
-from pyetherscan import Address
-
 from etherscan.accounts import Account
 import json
 
-with open('../../api_key.json', mode='r') as key_file:
+with open('api_key.json', mode='r') as key_file:
     key = json.loads(key_file.read())['key']
 
 address = '0xddbd2b932c763ba5b1b7ae3b362eac3e8d40121a'
@@ -13,7 +10,6 @@ api = Account(address=address, api_key=key)
 balance = api.get_balance()
 print(balance)
 
-client = Client()
 address_1 = '0xb215cFebB90D91b1D2F499843800d3105b1366Fc'
 address_2 = '0xE84c0cb5a6D2AE7E84Dcdcc0AAAb2A36cBc95c07'
 contract_address = '0x89d24a6b4ccb1b6faa2625fe562bdd9a23260359'
@@ -25,12 +21,12 @@ from time import sleep
 
 def getETH(address):
     # Get address
-    address_balance = client.get_single_balance(address)
+    api = Account(address=address, api_key=key)
 #    print ("Status Code: ", address_balance.response_status_code)
 #    print ("Satus: ", address_balance.message)
 
     # Get ethereum balance
-    balance = address_balance.balance
+    balance = api.get_balance()
     balance = balance / 10**18
     print("ETH Reading:", balance)
     return balance
