@@ -1,6 +1,7 @@
-from etherscan.accounts import Account
+from accounts_modified import Account
 import json
 
+# Import API key
 with open('api_key.json', mode='r') as key_file:
     key = json.loads(key_file.read())['key']
 
@@ -94,7 +95,7 @@ def run():
         print('\n')
 
         # Sleep
-        sleep(2)
+        sleep(5)
 
 run()
 
